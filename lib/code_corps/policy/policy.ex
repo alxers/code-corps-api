@@ -3,7 +3,7 @@ defmodule CodeCorps.Policy do
   Handles authorization for various API actions performed on objects in the database.
   """
 
-  alias CodeCorps.{Category, Comment, DonationGoal, GithubAppInstallation, GithubEvent, GithubRepo, Organization, OrganizationInvite, OrganizationGithubAppInstallation, Preview, Project, ProjectCategory, ProjectSkill, ProjectUser, Role, RoleSkill, Skill, StripeConnectAccount, StripeConnectPlan, StripeConnectSubscription, StripePlatformCard, StripePlatformCustomer, Task, TaskSkill, User, UserCategory, UserRole, UserSkill, UserTask}
+  alias CodeCorps.{Category, Comment, DonationGoal, GithubAppInstallation, GithubEvent, GithubRepo, Message, Organization, OrganizationInvite, OrganizationGithubAppInstallation, Preview, Project, ProjectCategory, ProjectSkill, ProjectUser, Role, RoleSkill, Skill, StripeConnectAccount, StripeConnectPlan, StripeConnectSubscription, StripePlatformCard, StripePlatformCustomer, Task, TaskSkill, User, UserCategory, UserRole, UserSkill, UserTask}
 
   alias CodeCorps.Policy
 
@@ -47,6 +47,10 @@ defmodule CodeCorps.Policy do
 
   # GithubRepo
   defp can?(%User{} = current_user, :update, %GithubRepo{} = github_repo, %{} = params), do: Policy.GithubRepo.update?(current_user, github_repo, params)
+
+  # Message
+  defp can?(%User{} = current_user, :show, %Message{} = message, %{}), do: Policy.Message.show?(current_user, message)
+  defp can?(%User{} = current_user, :create, %Message{}, %{} = params), do: Policy.Message.create?(current_user, params)
 
   # Organization
   defp can?(%User{} = current_user, :create, %Organization{}, %{} = params), do: Policy.Organization.create?(current_user, params)
